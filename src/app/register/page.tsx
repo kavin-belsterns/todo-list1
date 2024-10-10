@@ -1,11 +1,13 @@
 "use client";
-
+import Link from "next/link";
 import { useForm, SubmitHandler } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import {
+  AppBar,
+  Toolbar,
   Container,
   TextField,
   Button,
@@ -82,9 +84,20 @@ export default function Register() {
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
+      <AppBar
+    position="absolute"
+    color="primary"
+    
+  >
+    <Toolbar>
+      <Typography variant="h6" noWrap>
+        Todo List
+      </Typography>
+    </Toolbar>
+  </AppBar>
       <Box
         sx={{
-          marginTop: 8,
+          marginTop: 18,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -136,6 +149,7 @@ export default function Register() {
                 </Grid>
               )}
             </Grid>
+            <a style={{marginTop:12}} href="/login">Already have an account?</a>
             <Box mt={3}>
               <Button type="submit" fullWidth variant="contained" color="primary">
                 Register

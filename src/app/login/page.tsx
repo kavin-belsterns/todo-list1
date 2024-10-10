@@ -6,6 +6,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import {
+  AppBar,
+  Toolbar,
   Container,
   TextField,
   Button,
@@ -55,10 +57,21 @@ export default function Login() {
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
+      <AppBar
+    position="absolute"
+    color="primary"
+    
+  >
+    <Toolbar>
+      <Typography variant="h6" noWrap>
+        Todo List
+      </Typography>
+    </Toolbar>
+  </AppBar>
       
       <Box
         sx={{
-          marginTop: 8,
+          marginTop: 18,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -100,6 +113,8 @@ export default function Login() {
                 </Grid>
               )}
             </Grid>
+            <a style={{marginTop:12}} href="/register">Create New account?</a>
+
             <Box mt={3}>
               <Button
                 type="submit"

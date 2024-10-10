@@ -23,7 +23,11 @@ import Link from "next/link";
 import TodoForm from "../Component/TodoForm";
 import DeleteConfirmationDialog from "../Component/DeleteConfirmation";
 import TodoCard from "../Component/Todocard";
-import { signOut } from "next-auth/react"; // Import the signOut function from NextAuth
+import { useSession,signOut } from "next-auth/react"; // Import the signOut function from NextAuth
+import LoginIcon from '@mui/icons-material/Login';
+import SignupIcon from '@mui/icons-material/PersonAdd';
+
+
 
 interface TodoItem {
   id: number;
@@ -46,6 +50,7 @@ const TodoPage = () => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState<boolean>(false);
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
   const [currentPath, setCurrentPath] = useState<string>("");
+  const { data: session, status } = useSession(); // Use useSession to get session data
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
@@ -320,7 +325,7 @@ const TodoPage = () => {
             </ListItemIcon>
             <ListItemText primary="Profile" />
           </ListItem>
-          <ListItem  sx={{ 
+          {/* <ListItem  sx={{ 
     "&:hover": { 
       backgroundColor: "#e0e0e0", 
       cursor: "pointer", 
@@ -330,7 +335,54 @@ const TodoPage = () => {
               <LogoutIcon />
                 </ListItemIcon>
               <ListItemText primary="Sign Out" />
+            </ListItem> */}
+
+            {/* Sign Out button in the drawer, if the user is signed in */}
+          {session ? (
+            <ListItem sx={{ 
+              "&:hover": { 
+                backgroundColor: "#e0e0e0", 
+                cursor: "pointer", 
+              } 
+            }} onClick={handleSignOut}>
+              <ListItemIcon>
+                <LogoutIcon />
+              </ListItemIcon>
+              <ListItemText primary="Sign Out" />
             </ListItem>
+          ) : (
+        <>
+          <ListItem
+            component={Link}
+            href="/register"
+            sx={{
+              backgroundColor: isPageActive("/profile") ? "#f0f0f0" : "transparent","&:hover": { 
+                backgroundColor: "#e0e0e0", 
+                cursor: "pointer", 
+              } 
+            }}
+          >
+            <ListItemIcon>
+            <SignupIcon />
+            </ListItemIcon>
+            <ListItemText primary="SignUp" />
+          </ListItem>
+          <ListItem
+            component={Link}
+            href="/login"
+            sx={{
+              backgroundColor: isPageActive("/profile") ? "#f0f0f0" : "transparent","&:hover": { 
+                backgroundColor: "#e0e0e0", 
+                cursor: "pointer", 
+              } 
+            }}
+          >
+            <ListItemIcon>
+            <LoginIcon />            </ListItemIcon>
+            <ListItemText primary="Login" />
+          </ListItem>
+        </>
+      )}
         </List>
       </Drawer>
 

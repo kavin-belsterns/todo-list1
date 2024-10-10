@@ -21,7 +21,8 @@ import { Menu as MenuIcon, Home as HomeIcon, Person as PersonIcon, Logout as Log
 import { useTheme } from "@mui/material/styles";
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react"; // Import useSession and signOut from NextAuth
-
+import LoginIcon from '@mui/icons-material/Login';
+import SignupIcon from '@mui/icons-material/PersonAdd';
 interface UserProfile {
   email: string;
   name: string | null;
@@ -161,7 +162,7 @@ const ProfilePage = () => {
           
 
           {/* Sign Out button in the drawer, if the user is signed in */}
-          {session && (
+          {session ? (
             <ListItem sx={{ 
               "&:hover": { 
                 backgroundColor: "#e0e0e0", 
@@ -173,7 +174,39 @@ const ProfilePage = () => {
               </ListItemIcon>
               <ListItemText primary="Sign Out" />
             </ListItem>
-          )}
+          ) : (
+        <>
+          <ListItem
+            component={Link}
+            href="/register"
+            sx={{
+              backgroundColor: isPageActive("/profile") ? "#f0f0f0" : "transparent","&:hover": { 
+                backgroundColor: "#e0e0e0", 
+                cursor: "pointer", 
+              } 
+            }}
+          >
+            <ListItemIcon>
+            <SignupIcon />
+            </ListItemIcon>
+            <ListItemText primary="SignUp" />
+          </ListItem>
+          <ListItem
+            component={Link}
+            href="/login"
+            sx={{
+              backgroundColor: isPageActive("/profile") ? "#f0f0f0" : "transparent","&:hover": { 
+                backgroundColor: "#e0e0e0", 
+                cursor: "pointer", 
+              } 
+            }}
+          >
+            <ListItemIcon>
+            <LoginIcon />            </ListItemIcon>
+            <ListItemText primary="Login" />
+          </ListItem>
+        </>
+      )}
         </List>
       </Drawer>
 
