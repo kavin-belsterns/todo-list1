@@ -4,7 +4,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   AppBar,
   Toolbar,
@@ -18,7 +18,7 @@ import {
 } from "@mui/material";
 import { Grid2 as Grid } from "@mui/material";
 import axios from 'axios'; // Import axios
-import { signIn } from "next-auth/react"; // Import NextAuth signIn
+import { signIn, useSession } from "next-auth/react"; // Import NextAuth signIn
 
 interface IFormInput {
   email: string;
@@ -38,6 +38,8 @@ const schema = yup.object().shape({
 
 export default function Register() {
   const router = useRouter();
+  const { data: session } = useSession(); // Access the current session
+
   const [error, setError] = useState<string>("");
 
   // useForm from react-hook-form, with Yup for validation
@@ -65,7 +67,7 @@ export default function Register() {
 
         // If signIn is successful, redirect to the homepage
         if (!signInResponse?.error) {
-          router.push("/home"); // Redirect to homepage on success
+          router.replace("/home"); // Redirect to homepage on success
         } else {
           setError(signInResponse.error); // Display error if signIn failed
           
@@ -80,6 +82,14 @@ export default function Register() {
       }
     }
   };
+
+
+  useEffect(() => {
+    // If the user is already logged in, redirect to home page
+    if (session) {
+      router.replace("/home"); // Replace history to prevent back navigation
+    }
+  }, [session, router]);
 
   return (
     <Container component="main" maxWidth="xs">

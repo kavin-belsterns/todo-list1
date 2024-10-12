@@ -28,6 +28,8 @@ const schema = yup.object().shape({
   password: yup.string().required("Password is required"),
 });
 
+
+
 export default function Login() {
   const router = useRouter();
   const [error, setError] = useState<string>("");
@@ -49,10 +51,13 @@ export default function Login() {
 
     if (res?.error) {
       setError(res.error);
-    } else {
-      router?.push("/home");
-    }
+    } 
+  
+     else {
+       router?.replace("/home");
+     }
   };
+ 
 
   return (
     <Container component="main" maxWidth="xs">
