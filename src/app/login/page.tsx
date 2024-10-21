@@ -1,5 +1,5 @@
 "use client";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -31,6 +31,8 @@ const schema = yup.object().shape({
 
 
 export default function Login() {
+  const { data: session } = useSession(); // Access the current session
+
   const router = useRouter();
   const [error, setError] = useState<string>("");
 
@@ -54,7 +56,17 @@ export default function Login() {
     } 
   
      else {
-       router?.replace("/home");
+      // if(session?.user.role==="USER")
+      //   {
+      //     router.replace("/home"); 
+      //   }
+      //   else
+      //   {
+      //     router.replace("/admin/home"); 
+      //   }
+      window.location.reload();
+
+      //  router?.replace("/home");
      }
   };
  

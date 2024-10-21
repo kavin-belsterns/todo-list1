@@ -14,28 +14,47 @@ export default auth(async(req) => {
 
    
     const role = (req.auth?.user as any)?.role;
-    console.log(role)
     const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
     const isAuthRoute = authRoutes.includes(nextUrl.pathname);
     const isAdminRoute=adminRoute.includes(nextUrl.pathname);
-    if(isLoggedIn && isPublicRoute && role === 'ADMIN') {
+    console.log(isLoggedIn)
+    if(isLoggedIn && role === 'ADMIN') {
       
-      return NextResponse.redirect(new URL("/admin/home", req.url));
-    }
-    if(isLoggedIn && isAuthRoute && role === 'ADMIN') {
       
-      return NextResponse.redirect(new URL("/admin/home", req.url));
+      if(isPublicRoute)
+      {
+        return NextResponse.redirect(new URL("/admin/home", req.url));
+
+      }
+      else if(isAuthRoute || isAdminRoute)
+      {
+       return NextResponse.next();
+  }
+
+
+     
+      
+     
     }
+    // if(isLoggedIn  && role === 'ADMIN') {
+      
+    //   return NextResponse.redirect(new URL("/admin/home", req.url));
+    // }
+    
 //    console.log(isAuthRoute)
      if (isLoggedIn && isPublicRoute && role !== 'ADMIN') {
 
         return NextResponse.redirect(new URL("/home", req.url));
       }
+      if(isLoggedIn && !isAuthRoute && role !== 'ADMIN') {
+      
+        return NextResponse.redirect(new URL("/home", req.url));
+      }
    
-    // if (isAuthRoute && !isLoggedIn) {
-    // //   return NextResponse.next();
-    // return NextResponse.redirect(new URL("/login", req.url));
-    // }
+    if (isAuthRoute && !isLoggedIn) {
+    //   return NextResponse.next();
+    return NextResponse.redirect(new URL("/login", req.url));
+    }
 
    
     if (!isLoggedIn && !isPublicRoute ) {

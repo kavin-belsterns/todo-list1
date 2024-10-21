@@ -67,8 +67,20 @@ export default function Register() {
 
         // If signIn is successful, redirect to the homepage
         if (!signInResponse?.error) {
-          router.replace("/home"); // Redirect to homepage on success
-        } else {
+          // if(session?.user.role==="USER")
+          // {
+          //   router.replace("/home"); 
+          // }
+          // else
+          // {
+          //   router.replace("/admin/home"); 
+          // }
+          window.location.reload();
+
+          
+          // Redirect to homepage on success
+        } 
+        else {
           setError(signInResponse.error); // Display error if signIn failed
           
         }
@@ -86,7 +98,7 @@ export default function Register() {
 
   useEffect(() => {
     // If the user is already logged in, redirect to home page
-    if (session) {
+    if (session ) {
       router.replace("/home"); // Replace history to prevent back navigation
     }
   }, [session, router]);
